@@ -12,12 +12,13 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "@repo/store":"workspace:*",
     "@types/recoil": "^0.0.9",
     "next": "16.2.0",
     "next-auth": "^4.24.14",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "recoil": "^0.7.7"
+    "react-dom": "^19.2.0"
+   
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

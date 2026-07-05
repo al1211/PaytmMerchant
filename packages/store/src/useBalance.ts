@@ -1,9 +1,11 @@
+import { create } from "zustand";
 
-import { useRecoilValue } from "recoil";
-import { balanceAtom } from "./balance";
-
-
-export const useBalance=()=>{
-    const value=useRecoilValue(balanceAtom);
-    return value
+interface BalanceStore {
+  balance: number;
+  setBalance: (balance: number) => void;
 }
+
+export const useBalance = create<BalanceStore>((set) => ({
+  balance: 0,
+  setBalance: (balance) => set({ balance }),
+}));
