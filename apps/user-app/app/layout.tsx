@@ -2,8 +2,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import {SessionProvider} from "next-auth/react"
 import Providers from "../Provider";
+import {Inter} from "next/font/google"
+import { AppbarClient } from "../component/AppbarClent";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,15 +29,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
- 
-<Providers>
+      <head>
+        
+      </head>
 
+      <Providers>
+        <body className={inter.className}>
+          
+        <div className="min-w-screen min-h-screen bg-[#ebe6e6]">
+            <AppbarClient />
+            {children}
+          </div>
+        </body>
+      </Providers>
 
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
-</Providers>
-     
     </html>
   );
 }
