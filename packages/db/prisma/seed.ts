@@ -1,6 +1,5 @@
-import { PrismaClient } from "../generated/prisma/client"
-const connectString=process.env.DATABASE_URL;
-const prisma = new PrismaClient()
+import {prisma} from "../index"
+
 
 async function main() {
   const alice = await prisma.user.upsert({
