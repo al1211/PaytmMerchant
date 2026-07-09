@@ -31,6 +31,9 @@ export const AddMoney = () => {
         }))} />
         <div className="flex justify-center pt-4">
             <Button onClick={() => {
+                await axios.post("http://localhost:3004/tranfer",{
+                    amount:30,
+                })
                 window.location.href = redirectUrl || "";
             }}>
             Add Money
