@@ -1,5 +1,5 @@
-import {prisma} from "../index"
 
+import {prisma} from "./client"
 
 async function main() {
   const alice = await prisma.user.upsert({

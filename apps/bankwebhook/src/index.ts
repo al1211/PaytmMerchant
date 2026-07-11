@@ -2,17 +2,20 @@ import express, { Request, Response } from "express"
 import {prisma} from "@repo/db"
 const app=express();
 
+app.use(express.json());
+
 
 app.post("/hdfcbank",async(req:Request,res:Response)=>{
   const paymentInformation:{
     token:string,
-    userId:string,
-    amount:string
+    userId:number,
+    amount:number
   }={
     token:req.body.token,
-    userId:req.body.user_identifier,
-    amount:req.body.amount
+    userId:Number(req.body.user_identifier),
+    amount:Number(req.body.amount)
   };
+console.log("Parsed Payment Information:", paymentInformation);
   try{
     
     await prisma.$transaction([
@@ -35,20 +38,25 @@ app.post("/hdfcbank",async(req:Request,res:Response)=>{
           status:"Success"
         }
       })
-    ]);
+    ],{
+      timeout:15000
+    });
+    return  res.json({
+    message: "Captured"
+  })
 
   }catch(e){
     console.error(e);
-    res.status(411).json({
+   return res.status(411).json({
       message:"Error while processing webhook"
         })
   }
  
 
-        res.json({
-            message: "Captured"
-        })
+
 
 })
 
-app.listen(3004);
+app.listen(3004,()=>{
+  console.log("server is listen on port 3004")
+});
