@@ -8,27 +8,41 @@ import { prisma } from "@repo/db";
 
 
 
-export async function createOnRamptransaction(amount:number,provider:string){
+export async function p2pTransaction(to:string,amount:number){
     const session =await getServerSession(authOptions);
     const userId=session?.user?.id;
-    const token=Math.random().toString();
     if(!userId){
         return {
             message:"User not logged in"
         }
     }
-
-    await prisma.onRampTransaction.create({
-        data:{
-            userId:Number(userId),
-            amount:amount,
-            status:"Processing",
-            startTime:new Date(),
-            provider,
-            token:token
+    const toUser=await prisma.user.findFirst({
+        where:{
+            number:to
         }
     })
-    return {
-        message:"on ramp transaction added"
-    }
+       if(!toUser){
+        return {
+            message:"User not found"
+        }
+       }
+    await prisma.$transaction(async(tx)=>{
+        const fromBalance=await tx.balance.findUnique({
+            where:{userId:Number(userId)}
+        });
+         
+        if(!fromBalance || fromBalance.amount <amount){
+            throw new Error("Insufficient funds");
+        };
+
+        await tx.balance.update({
+            where:{userId:Number(userId)},
+            data:{amount:{decrement:amount}}
+        });
+
+        await tx.balance.update({
+            where:{userId:toUser.id},
+            data:{amount:{increment:amount}}
+        })
+    })
 }

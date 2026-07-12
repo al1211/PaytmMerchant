@@ -5,6 +5,7 @@ import { Select } from "@repo/ui/Select";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/TextInput";
 import { createOnRamptransaction } from "../app/lib/actions/createOnRamptns";
+import { p2pTransaction } from "../app/lib/actions/p2pTransaction";
 
 
 
@@ -22,7 +23,8 @@ export const SendMoney = () => {
         
         <div className="flex justify-center pt-4">
             <Button onClick={async() => {
-              
+              await p2pTransaction(number,(Number(amount)*100))
+              alert("succesufully send")
             }}>
             Send
             </Button>
